@@ -29,7 +29,7 @@ module.exports = function(){
             account,
             function(err, result){
                 if(err){
-                    console.log(err)
+                    console.log("gggg" +err)
                 }else{
                     return result
                 }
@@ -43,12 +43,12 @@ module.exports = function(){
         const hexchainid = wallet.chainId
 
         // 지갑연동없이 요청했다면 메인페이지를 보여준다
-        if(wallet.length == 0){
-            res.send("Main")
+        if(wallet == null || wallet == ""){
+            console.log("엄서용~")
         }else{ 
             // 지갑연동을 했다면 지갑주소값으로 checkId()통해 회원정보확인
             // 없다면 insert 있다면 지갑의 보유코인 update   
-            if(checkId(account) == 0  || checkId(account) == null ){
+            if(checkId(account) === 0  || checkId(account) == null ){
                 const sql = `
                     insert into
                     testenn.users(wallet, balance, hexchainid, created_at)
@@ -61,7 +61,7 @@ module.exports = function(){
                     values,
                     function(err, result){
                         if(err){
-                            console.log(err)
+                            console.log("dff"+err)
                         }else{
                             res.send("정보저장 완료~")
                         }
@@ -69,7 +69,7 @@ module.exports = function(){
                 )
             }else{
                 const sql =`
-                    update testenn.user set
+                    update testenn.users set
                     balance = ? 
                     where 
                     wallet = ?
@@ -80,7 +80,7 @@ module.exports = function(){
                     values,
                     function(err, result){
                         if(err){
-                            console.log(err)
+                            console.log("Asdfas"+err)
                         }else{
                             res.send("업뎃완료~")
                         }
