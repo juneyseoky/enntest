@@ -88,8 +88,8 @@ module.exports = function(){
                 )
             }
         }
-        console.log(wallet)
-        res.send(true)
+        // console.log(wallet)
+        // res.send(true)
     })
 
 
