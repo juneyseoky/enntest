@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%for(var i=0; i < data.length; i++){%>
+        <div style="border:1px solid black" id='nft<%=i%>' onclick="location.href='/market/nftselladd?nftname='+'<%=data[i].nftname%>'">
+        <div><%=data[i].owner%></div>
+        <div><%=data[i].nftname%></div>
+        <div><%=data[i].price%></div>
+        <div><%=data[i].nftaccount%></div>
+        <div><%=data[i].state%></div>
+    </div><br>
+        <%}%>
+</body>
+</html>

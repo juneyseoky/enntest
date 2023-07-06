@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function boardDetail(_bno){
+            location.href = "/board/boardDetail"+_bno
+
+        }
+    </script>
+</head>
+<body>
+    <button onclick="location.href='/board/writer'" >글 쓰기</button>
+    <input type="text" name="_bno" value="<%=data[0].bo_no%>" readonly>
+    <button onclick="location.href = '/board/boardDetail?bo_no='+'<%=data[0].bo_no%>'">상세보기</button>
+</body>
+</html>

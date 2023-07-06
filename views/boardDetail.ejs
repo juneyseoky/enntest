@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%=data._bo_no%><br>
+    <%=data.writername%><br>
+    <%=data.title%><br>
+    <%=data.content%><br>
+    <%=data.date%><br>
+    <%=data.walletname%><br>
+    <%=data.count%><br>
+    <button onclick="location.href='/board/contentdel/'+'<%=data.bo_no%>'">글삭제</button>
+    <button onclick="location.href='/board/contentup/'+'<%=data.bo_no%>'">수정</button>
+    <button onclick="location.href='/board'">글목록</button>
+</body>
+</html>
