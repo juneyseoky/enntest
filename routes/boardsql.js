@@ -15,24 +15,24 @@ const connection = mysql.createConnection({
 
 module.exports = function(){
     //조회수 증가하는 function
-    function viewincrement(_bno){
-        const sql =`
-            update contents set
-            count = count + 1
-            where
-            bo_no = ?
-        `
-        const values = _bno
-        connection.query(
-            sql,
-            values,
-            function(err, result){
-                if(err){
-                    console.log(err)
-                }
-            }
-        )
-    }
+    // function viewincrement(_bno){
+    //     const sql =`
+    //         update contents set
+    //         count = count + 1
+    //         where
+    //         bo_no = ?
+    //     `
+    //     const values = _bno
+    //     connection.query(
+    //         sql,
+    //         values,
+    //         function(err, result){
+    //             if(err){
+    //                 console.log(err)
+    //             }
+    //         }
+    //     )
+    // }
     // 글쓰기를 눌렀을때 글쓰기 폼으로 이동
     router.get('/writer', function(req, res){
         res.render('writer')
