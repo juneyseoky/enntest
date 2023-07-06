@@ -69,7 +69,7 @@ module.exports = function(){
                 )
             }else{
                 const sql =`
-                    update user set
+                    update testenn.user set
                     balance = ? 
                     where 
                     wallet = ?
