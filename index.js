@@ -1,12 +1,24 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+
 
 const port = 3000
+
+// app.use(cors({
+//     // methods : ["GET", "POST"],
+//     // credentials: true
+// }))
+
+app.use(cors())
 
 app.set('views', __dirname+"/views")
 app.set('view engine', 'ejs')
 
-app.use(express.urlencoded({extended:false}))
+const bodyparser = require('body-parser')
+
+app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({extended:true}))
 
 // const session = require('express-session') 
 
