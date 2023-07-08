@@ -17,6 +17,7 @@ module.exports = ()=>{
         console.log(req.body)
         const wallet = req.body.wallet
         const balance = req.body.balance
+        const hexchainid = req.body.hexchainid
         
         if(wallet){
             // console.log("지갑주소 :" + wallet)
@@ -44,7 +45,7 @@ module.exports = ()=>{
                                     testenn.users(wallet, balance, hexchainid, created_at)
                                     values (?, ?, ?, now())
                                 `
-                                const values = [wallet, balance, wallet]
+                                const values = [wallet, balance, hexchainid]
                                 connection.query(
                                     sql,
                                     values,
