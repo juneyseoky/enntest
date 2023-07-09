@@ -2,38 +2,16 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 
-
 const port = 3000
-
-// app.use(cors({
-//     // methods : ["GET", "POST"],
-//     // credentials: true
-// }))
 
 app.use(cors())
 
 app.set('views', __dirname+"/views")
-app.set('view engine', 'ejs')
-
 const bodyparser = require('body-parser')
 
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({extended:true}))
 
-// const session = require('express-session') 
-
-// app.use(
-//     session(
-//         {
-//             secret : process.env.secret,
-//             resave : false,
-//             saveUninitialized : false,
-//             cookie : {
-//                 maxAge : 60000 // 1000당 1초
-//             }
-//         }
-//     )
-// )
 
 require('dotenv').config()
 
