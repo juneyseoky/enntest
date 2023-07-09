@@ -6,15 +6,27 @@
     <title>Document</title>
 </head>
 <body>
-    <%=data._bo_no%><br>
-    <%=data.writername%><br>
-    <%=data.title%><br>
-    <%=data.content%><br>
-    <%=data.date%><br>
-    <%=data.walletname%><br>
-    <%=data.count%><br>
-    <button onclick="location.href='/board/contentdel/'+'<%=data.bo_no%>'">글삭제</button>
-    <button onclick="location.href='/board/contentup/'+'<%=data.bo_no%>'">수정</button>
+    <%=posts.id%><br>
+    <%=posts.writer_user_id%><br>
+    <%=posts.title%><br>
+    <%=posts.contents%><br>
+    <%=posts.created_at%><br>
+    <%=posts.ensname%><br>
+    <%=posts.updated_at%><br>
+    <br>
+    <%if (comments.length == 0){ %>
+        <p>댓글이 없다!</p>
+    <%}else{%>
+    <%=comments[0].id%><br>
+    <%=comments[0].contents%><br>
+    <%=comments[0].writer_user_id%><br>
+    <%=comments[0].post_id%><br>
+    <%=comments[0].created_at%><br>
+    <%=comments[0].updated_at%><br>
+    <%=comments[0].ensname%><br>
+    <%}%>
+    <button onclick="location.href='/board/contentdel?id='+'<%=posts.id%>'">글삭제</button>
+    <button onclick="location.href='/board/contentup?id='+'<%=posts.id%>'">수정</button>
     <button onclick="location.href='/board'">글목록</button>
 </body>
 </html>

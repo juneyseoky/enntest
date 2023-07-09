@@ -35,18 +35,36 @@ module.exports = function(){
     // }
 
     // 글쓰기를 눌렀을때 글쓰기 폼으로 이동
-    router.get('/writer', function(req, res){
-        res.render('writer')
+    router.post('/writer', function(req, res){
+        const wallet = req.body.wallet
+        const sql = `
+            select u.id, n.ensname from testenn.users u 
+            join testenn.nfts n on u.active_nft_id = n.id
+            where u.wallet = ?
+        `
+        connection.query (
+            sql,
+            wallet,
+            function(err, result){
+                if(err){
+                    console.log(err)
+                }else{
+                    res.render('writer', {
+                        data : result
+                    })
+                }
+            }
+        )
     })
     // localhost:3000/board 요청이 들어올시 게시판 목록
     router.get('/', function(req, res){
         const sql = `
-        select p.*, un.*
-        from testenn.posts p join
-        (select u.*,n.ensname 
-        from testenn.users u join 
-        testenn.nfts n on u.active_nft_id = n.id) un
-        order by p.created_at desc;
+            select p.*, un.ensname, un.wallet
+            from testenn.posts p join
+            (select u.*,n.ensname 
+            from testenn.users u join 
+            testenn.nfts n on u.active_nft_id = n.id) un
+            order by p.created_at desc
     `
     connection.query(
         sql,
@@ -68,48 +86,61 @@ module.exports = function(){
     router.get('/boardDetail?', function(req, res){
         const id = req.query.id
 
-        //query로 받아온 글번호로 조회수증가
-        //viewincrement(bo_no)
         let sql = `
-            select
-            *
-            from 
-            testenn.posts
-            where
-            id = ?
+            select p.*, n.ensname from testenn.posts p
+            left join testenn.users u on p.writer_user_id = u.id
+            left join testenn.nfts n on u.active_nft_id = n.id
+            where p.id = ?
         `
         connection.query(
             sql,
             id,
-            function(err, result){
+            async function(err, posts){
                 if(err){
                     console.log(err)
                 }else{
-                    console.log(result[0])
-                    res.render('boardDetail.ejs', {
-                        data : result[0]
-                    })
+                    
+                    sql = `
+                        select c.*, n.ensname from testenn.comments c
+                        left join testenn.users u on c.writer_user_id = u.id
+                        left join testenn.nfts n on u.active_nft_id = n.id
+                        where c.post_id = ?
+                    `
+                    connection.query(
+                        sql,
+                        id,
+                        async function(err, comments){
+                            if(err){
+                                console.log(err)
+                            }else{
+                                console.log(comments)
+                                // return await result
+                                res.render('boardDetail', {
+                                    'posts' : posts[0],
+                                    'comments' : comments
+                                })
+                            }
+                        }
+                    )
                 }
-
             }
-        )
+        )        
     })
 
-    // 글쓰기
+    // 글쓰기버튼을 누를때 writer는 users.id가 넘어와야됨
     router.post('/boardregister', function(req, res){
-        const writer = req.body._writer
+        const writer = req.body.user_id
         const title = req.body._title
         const content = req.body._content
-        const wallet = req.body._wallet
 
         const sql =`
             insert
             into
-            testenn.posts(writer_user_id, contents, created_at)
+            testenn.posts(writer_user_id, contents, created_at, title)
             values
-            (?, ?, now())
+            (?, ?, now(), ?)
         `
-        const values = [writer, content]
+        const values = [writer, content, title]
 
         connection.query(
             sql,
@@ -124,9 +155,9 @@ module.exports = function(){
         )
     })
     // 글 삭제
-    router.get('/contentdel/:_bo_no', function(req, res){
-        const id = req.params._id
-
+    router.get('/contentdel?', function(req, res){
+        const id = req.query.id
+        console.log("asdfasdfasdfa"+id)
         const sql =`
             delete 
             from 
@@ -148,16 +179,15 @@ module.exports = function(){
         
     })
     // 글 수정 폼
-    router.get('/contentup:_bo_no', function(req, res){
-        const id = req.params._id
+    router.get('/contentup?', function(req, res){
+        const id = req.query.id
+        console.log(id)
 
         const sql = `
-            select
-            *
-            from
-            testenn.posts
-            where
-            bo_no = ?
+            select p.*, n.ensname from testenn.posts p
+            left join testenn.users u on p.writer_user_id = u.id
+            left join testenn.nfts n on u.active_nft_id = n.id
+            where p.id = ?
         `
         connection.query(
             sql,
@@ -183,11 +213,11 @@ module.exports = function(){
             testenn.posts
             set
             contents = ?,
-            updated_at = ?
+            updated_at = now()
             where
-            bo_no = ?
+            id = ?
         `
-        const values = [content, now(), id]
+        const values = [content, id]
 
         connection.query(
             sql,
@@ -196,7 +226,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.redirect('/board/boardDetail'+bno)
+                    res.redirect('/board/boardDetail?id='+id)
                 }
             }
         )

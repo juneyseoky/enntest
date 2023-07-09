@@ -8,8 +8,8 @@
 <body>
     <form action="/board/boardregister" method="post">
         <input type="text" name="_title"><br>
-        <input type="hidden" name="_writer" value="0xfhgjgdf54dfasdfNjf29Hfi">
-        <input type="hidden" name="_wallet" value="지갑이름4">
+        <input type="text" value="<%=data[0].ensname%>"><br>
+        <input type="text" name="user_id" value="<%=data[0].id%>">  
         <textarea name="_content"></textarea><br>
         <input type="submit" value="글 등록">
 

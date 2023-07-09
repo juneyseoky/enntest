@@ -43,13 +43,13 @@ app.use('/', main)
 const boardsql = require('./routes/boardsql.js')()
 app.use('/board', boardsql)
 
-// app.get('/', function(req, res){
-//     res.render('main')
-// })
+app.get('/', function(req, res){
+    res.render('main')
+})
 
 // market route
-const market = require('./routes/marketplace.js')()
-app.use('/market', market)
+// const market = require('./routes/marketplace.js')()
+// app.use('/market', market)
 
 const server = app.listen(port, function(){
     console.log("server start")

@@ -7,12 +7,12 @@
 </head>
 <body>
     <form action="/board/boardup" method="post">
-        <input type="number" name="_bo_no" value="<%=data.bo_no%>" readonly><br>
-        <input type="text" name="_writername" value="<%=data.writername%>" readonly><br>
+        <input type="number" name="_id" value="<%=data.id%>" readonly><br>
+        <input type="text" name="_writername" value="<%=data.writer_user_id%>" readonly><br>
         <input type="text" name="_title" value="<%=data.title%>" readonly><br>
-        <input type="text" name="_content" value="<%=data.content%>"><br>
-        <input type="text" name="_date" value="<%=data.date%>" readonly><br>
-        <input type="text" name="_walletname" value="<%=data.walletname%>" readonly><br>
+        <input type="text" name="_content" value="<%=data.contents%>"><br>
+        <input type="text" name="_date" value="<%=data.created_at%>" readonly><br>
+        <input type="text" name="_walletname" value="<%=data.ensname%>" readonly><br>
         <input type="submit" value="수정하기">
     </form>
 </body>

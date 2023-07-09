@@ -12,8 +12,19 @@
     </script>
 </head>
 <body>
-    <button onclick="location.href='/board/writer'" >글 쓰기</button>
-    <input type="text" name="_bno" value="<%=data[0].bo_no%>" readonly>
-    <button onclick="location.href = '/board/boardDetail?bo_no='+'<%=data[0].bo_no%>'">상세보기</button>
+    
+    <!-- 글목록 data안에 있는 데이터들 -->
+    <input type="text" name="_bno" value="<%=data[0].id%>" readonly>
+    <p><%=data[0].ensname%></p>
+    <p><%=data[0].writer_user_id%></p>
+    <p><%=data[0].contents%></p>
+    <p><%=data[0].created_at%></p>
+    <p><%=data[0].title%></p>
+   <form action="/board/writer" method="post">
+    <input type="text" name="wallet" value="<%=data[0].wallet%>">
+    <input type="submit" value="글작성">
+   </form>
+
+    <button onclick="location.href = '/board/boardDetail?id='+'<%=data[0].id%>'">상세보기</button>
 </body>
 </html>
