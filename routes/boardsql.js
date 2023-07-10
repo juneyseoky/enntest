@@ -59,13 +59,11 @@ module.exports = function(){
     // localhost:3000/board 요청이 들어올시 게시판 목록
     router.get('/', function(req, res){
         const sql = `
-            select p.*, un.ensname, un.wallet
-            from testenn.posts p join
-            (select u.*,n.ensname 
-            from testenn.users u join 
-            testenn.nfts n on u.active_nft_id = n.id) un
-            order by p.created_at desc
-    `
+            select p.*, n.ensname from testenn.posts p
+            left join testenn.users u on p.writer_user_id = u.id
+            left join testenn.nfts n on u.active_nft_id = n.id
+            order by created_at desc;
+        `
     connection.query(
         sql,
         (err , result)=>{
@@ -74,7 +72,7 @@ module.exports = function(){
                 res.send(err)
             }else{
                 console.log(result)
-                res.render('board',{
+                res.header('board',{
                     data : result
                 })
             }
@@ -83,8 +81,11 @@ module.exports = function(){
     })
     // 상세보기 눌렀을때마다 조회수 증가 해당 글번호를 가져와 보여주고
     // 
-    router.get('/boardDetail?', function(req, res){
-        const id = req.query.id
+    router.post('/boardDetail', function(req, res){
+        const id = req.body.id
+        const wallet = req.body.walletAddress[0]
+        console.log("id : " + id)
+        console.log("wallet : " + wallet)
 
         let sql = `
             select p.*, n.ensname from testenn.posts p
@@ -113,12 +114,29 @@ module.exports = function(){
                             if(err){
                                 console.log(err)
                             }else{
-                                console.log(comments)
-                                // return await result
-                                res.render('boardDetail', {
-                                    'posts' : posts[0],
-                                    'comments' : comments
-                                })
+                                
+                                sql = `
+                                    select u.id, n.ensname from testenn.users u
+                                    left join testenn.nfts n on u.active_nft_id = n.id
+                                    where u.wallet = ?                                 
+                                `
+                                connection.query(
+                                    sql,
+                                    wallet,
+                                    async function(err, ensname){
+                                        if(err){
+                                            console.log(err)
+                                        }else{
+                                            console.log(ensname)
+                                            res.header({
+                                                'posts' : posts[0],
+                                                'comments' : comments,
+                                                'myname' : ensname
+                                            })
+                                        }
+                                    }
+                                )
+                                
                             }
                         }
                     )
@@ -227,6 +245,31 @@ module.exports = function(){
                     console.log(err)
                 }else{
                     res.redirect('/board/boardDetail?id='+id)
+                }
+            }
+        )
+    })
+
+    //comment 등록 
+    router.post("/commentAdd", function(req, res){
+        const content = req.body.contents
+        const writer_id = req.body.writer_id
+        const post_id = req.body.post_id
+
+        const sql =`
+            insert into testenn.comments
+            (contents, writer_user_id, post_id, created_at)
+            values (?. ?, ?, now())
+        `
+        const values = [content, writer_id, post_id]
+        connection.query(
+            sql,
+            values,
+            function(err, result){
+                if(err){
+                    console.log(err)
+                }else{
+                    res.header(result)
                 }
             }
         )

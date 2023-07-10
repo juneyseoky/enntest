@@ -6,7 +6,9 @@ const port = 3000
 
 app.use(cors())
 
+
 app.set('views', __dirname+"/views")
+app.set("view engine" , "ejs")
 const bodyparser = require('body-parser')
 
 app.use(bodyparser.json())
@@ -20,6 +22,9 @@ app.use('/', main)
 
 const boardsql = require('./routes/boardsql.js')()
 app.use('/board', boardsql)
+
+const myPage = require('./routes/myPage.js')()
+app.use('/maPage', myPage)
 
 app.get('/', function(req, res){
     res.render('main')

@@ -14,6 +14,9 @@
     <%=posts.ensname%><br>
     <%=posts.updated_at%><br>
     <br>
+    <button onclick="location.href='/board/contentdel?id='+'<%=posts.id%>'">글삭제</button>
+    <button onclick="location.href='/board/contentup?id='+'<%=posts.id%>'">수정</button>
+    <button onclick="location.href='/board'">글목록</button>
     <%if (comments.length == 0){ %>
         <p>댓글이 없다!</p>
     <%}else{%>
@@ -25,8 +28,7 @@
     <%=comments[0].updated_at%><br>
     <%=comments[0].ensname%><br>
     <%}%>
-    <button onclick="location.href='/board/contentdel?id='+'<%=posts.id%>'">글삭제</button>
+    <button onclick="location.href='/board/contentdel?id='+'<%=posts.id%>'">댓글</button>
     <button onclick="location.href='/board/contentup?id='+'<%=posts.id%>'">수정</button>
-    <button onclick="location.href='/board'">글목록</button>
 </body>
 </html>

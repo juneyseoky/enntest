@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const Web3 = require('web3');
+const web3 = new Web3('http://172.30.1.72:8545');
 
 const mysql = require('mysql2')
 const connection = mysql.createConnection({
@@ -15,9 +17,14 @@ module.exports = ()=>{
 
     router.post('/', async function(req, res){
         console.log(req.body)
-        const wallet = req.body.wallet
-        const balance = req.body.balance
-        const hexchainid = req.body.hexchainid
+        const wallet = req.body.walletAddress[0]
+        const walletbal =await web3.eth.getBalance(wallet)
+        const balance =  walletbal / 10 ** 18
+        const hexchainid = req.body.walletAddress[2]
+
+        console.log("wallet : " + wallet)
+        console.log("balance : " + walletbal / 10 ** 18)
+        console.log("hexchainid : " + hexchainid)
         
         if(wallet){
             // console.log("지갑주소 :" + wallet)
@@ -36,7 +43,7 @@ module.exports = ()=>{
                         console.log(err)
                     }else{
                         console.log("검색완료")
-                        console.log("검색결과 : " +result)
+                        console.log("검색결과 : " + JSON.stringify(result))
                                         
                         if(!result || result.length == 0){
                             console.log('1')
