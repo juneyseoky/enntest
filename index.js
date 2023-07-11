@@ -24,7 +24,7 @@ const boardsql = require('./routes/boardsql.js')()
 app.use('/board', boardsql)
 
 const myPage = require('./routes/myPage.js')()
-app.use('/maPage', myPage)
+app.use('/myPage', myPage)
 
 app.get('/', function(req, res){
     res.render('main')

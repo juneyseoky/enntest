@@ -61,7 +61,6 @@ module.exports = ()=>{
                                             console.log(err)
                                         }else{
                                             console.log("인서트 완료" )
-                                            res.redirect("main")
                                         }
                                     }
                                 )
@@ -82,7 +81,6 @@ module.exports = ()=>{
                                             console.log(err)
                                         }else{
                                             console.log("업데이트 완료")
-                                            res.redirect("main")
                                         }
                                     }
                                 )
@@ -97,7 +95,6 @@ module.exports = ()=>{
         
 
         console.log(wallet +"연동")
-        res.render("main")
     })
 
     router.get("/test", function(req, res){

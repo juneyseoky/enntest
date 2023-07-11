@@ -49,7 +49,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.render('writer', {
+                    res.send( {
                         data : result
                     })
                 }
@@ -64,21 +64,21 @@ module.exports = function(){
             left join testenn.nfts n on u.active_nft_id = n.id
             order by created_at desc;
         `
-    connection.query(
-        sql,
-        (err , result)=>{
-            if(err){
-                console.log(err)
-                res.send(err)
-            }else{
-                console.log(result)
-                res.header('board',{
-                    data : result
-                })
+        connection.query(
+            sql,
+            (err , result)=>{
+                if(err){
+                    console.log(err)
+                    res.send(err)
+                }else{
+                    console.log(result)
+                    res.send({
+                        data : result
+                    })
+                }
             }
-        }
-    )
-    })
+        )
+        })
     // 상세보기 눌렀을때마다 조회수 증가 해당 글번호를 가져와 보여주고
     // 
     router.post('/boardDetail', function(req, res){
@@ -167,7 +167,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.redirect('/board')
+                    res.send("작성완료")
                 }
             }
         )
@@ -191,7 +191,7 @@ module.exports = function(){
                     console.log(err)
 
                 }else{
-                    res.redirect('/board')
+                    res.send('삭제완료')
                 }
             })
         
@@ -214,7 +214,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.render('conupdate.ejs', {
+                    res.send({
                         data : result[0]
                     })
                 }
@@ -234,7 +234,7 @@ module.exports = function(){
             updated_at = now()
             where
             id = ?
-        `
+        `   
         const values = [content, id]
 
         connection.query(
@@ -244,7 +244,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.redirect('/board/boardDetail?id='+id)
+                    res.send("수정완료")
                 }
             }
         )
@@ -269,7 +269,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.header(result)
+                    res.send("댓글작성완료")
                 }
             }
         )

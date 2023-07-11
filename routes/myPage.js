@@ -26,12 +26,12 @@ module.exports = function(){
         connection.query(
             sql,
             wallet,
-            function(err, result){
+            function(err, post_c){
                 if(err){
                     console.log(err)
                 }else{
                     console.log(result[0].cnt)
-                   res.send(JSON.stringify(result[0].cnt))
+                   res.send(JSON.stringify(post_c[0].cnt))
                 }
                    
             }
@@ -42,7 +42,7 @@ module.exports = function(){
         const wallet = req.body.wallet
 
         const sql = `
-            select count(*) from testenn.comments c
+            select count(*) cnt from testenn.comments c
             join testenn.users u on u.id = c.writer_user_id
             where u.wallet = ?
         `
@@ -53,7 +53,7 @@ module.exports = function(){
                 if(err){ 
                     console.log(err)
                 }else{
-                    res.header({ "comments_c" : comments_c})
+                    res.send(JSON.stringify(comments_c[0].cnt))
                 }
             }
         )
@@ -74,7 +74,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.header({"usingName" : usingName })
+                    res.send({"usingName" : usingName })
                 }
             }
         )
@@ -94,7 +94,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.header({"holdName" : holdname})
+                    res.send({"holdName" : holdname})
                 }
             }
         )
