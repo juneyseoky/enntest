@@ -128,7 +128,7 @@ module.exports = function(){
                                             console.log(err)
                                         }else{
                                             console.log(ensname)
-                                            res.header({
+                                            res.send({
                                                 'posts' : posts[0],
                                                 'comments' : comments,
                                                 'myname' : ensname
@@ -252,7 +252,7 @@ module.exports = function(){
 
     //comment 등록 
     router.post("/commentAdd", function(req, res){
-        const content = req.body.contents
+        const content = req.body.content
         const writer_id = req.body.writer_id
         const post_id = req.body.post_id
 
