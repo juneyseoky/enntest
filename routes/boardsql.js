@@ -37,6 +37,7 @@ module.exports = function(){
     // 글쓰기를 눌렀을때 글쓰기 폼으로 이동
     router.post('/writer', function(req, res){
         const wallet = req.body.wallet
+        console.log(wallet)
         const sql = `
             select u.id, n.ensname from testenn.users u 
             join testenn.nfts n on u.active_nft_id = n.id
@@ -57,6 +58,7 @@ module.exports = function(){
         )
     })
     // localhost:3000/board 요청이 들어올시 게시판 목록
+    // posts.*  nfts.ensname, comments_coutn 반환
     router.get('/', function(req, res){
         const sql = `
             select p.*, n.ensname,(
@@ -83,7 +85,7 @@ module.exports = function(){
         )
         })
     // 상세보기 눌렀을때마다 조회수 증가 해당 글번호를 가져와 보여주고
-    // 
+    // 지갑주소를 가져와 ensname을 보여주기 위해 POST 방식으로 받음
     router.post('/boardDetail', function(req, res){
         const id = req.body.id
         const wallet = req.body.walletAddress[0]
