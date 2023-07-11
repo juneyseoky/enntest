@@ -59,7 +59,10 @@ module.exports = function(){
     // localhost:3000/board 요청이 들어올시 게시판 목록
     router.get('/', function(req, res){
         const sql = `
-            select p.*, n.ensname from testenn.posts p
+            select p.*, n.ensname,(
+            SELECT COUNT(*) FROM testenn.comments c
+            WHERE c.post_id = p.id GROUP BY "http://localhost:3000"
+            ) as commnet_count from testenn.posts p
             left join testenn.users u on p.writer_user_id = u.id
             left join testenn.nfts n on u.active_nft_id = n.id
             order by created_at desc;
