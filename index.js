@@ -4,11 +4,15 @@ const cors = require('cors')
 
 const port = 3000
 
+// let corsOptions = {
+//    origin: "*", // 출처 허용 옵션
+//    credential: true, // 사용자 인증이 필요한 리소스(쿠키 ..등) 접근
+//  }
+  
 app.use(cors())
 
-
-app.set('views', __dirname+"/views")
-app.set("view engine" , "ejs")
+// app.set('views', __dirname+"/views")
+// app.set("view engine" , "ejs")
 const bodyparser = require('body-parser')
 
 app.use(bodyparser.json())

@@ -30,7 +30,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    console.log(result[0].cnt)
+                   // console.log(result[0].cnt)
                    res.send(JSON.stringify(post_c[0].cnt))
                 }
                    
@@ -39,7 +39,8 @@ module.exports = function(){
         
     })
     route.get("/commentsAll?", function(req, res){
-        const wallet = req.body.wallet
+        const wallet = req.query.wallet
+        console.log(wallet)
 
         const sql = `
             select count(*) cnt from testenn.comments c
@@ -59,7 +60,8 @@ module.exports = function(){
         )
     })
     route.get("/usingName?", function(req, res){
-        const wallet = req.body.wallet
+        const wallet = req.query.wallet
+        console.log("사용중인이름 : " + wallet)
 
         const sql = `
             select n.ensname name from testenn.users u 
@@ -74,7 +76,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.send({"usingName" : usingName })
+                    res.send( usingName )
                 }
             }
         )
@@ -94,7 +96,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
-                    res.send({"holdName" : holdname})
+                    res.send( holdname)
                 }
             }
         )

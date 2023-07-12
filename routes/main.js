@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Web3 = require('web3');
-const web3 = new Web3('http://172.30.1.72:8545');
+const web3 = new Web3('https://1d61-119-192-224-93.ngrok-free.app/geth/');
 
 const mysql = require('mysql2')
 const connection = mysql.createConnection({
@@ -23,7 +23,7 @@ module.exports = ()=>{
         const hexchainid = req.body.walletAddress[2]
 
         console.log("wallet : " + wallet)
-        console.log("balance : " + walletbal / 10 ** 18)
+        // console.log("balance : " + walletbal / 10 ** 18)
         console.log("hexchainid : " + hexchainid)
         
         if(wallet){

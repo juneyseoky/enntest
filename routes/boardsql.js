@@ -40,7 +40,7 @@ module.exports = function(){
         console.log(wallet)
         const sql = `
             select u.id, n.ensname from testenn.users u 
-            join testenn.nfts n on u.active_nft_id = n.id
+            left join testenn.nfts n on u.active_nft_id = n.id
             where u.wallet = ?
         `
         connection.query (
@@ -50,6 +50,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
+                    console.log(result)
                     res.send( {
                         data : result
                     })
@@ -63,7 +64,7 @@ module.exports = function(){
         const sql = `
             select p.*, n.ensname,(
             SELECT COUNT(*) FROM testenn.comments c
-            WHERE c.post_id = p.id GROUP BY "http://localhost:3000"
+            WHERE c.post_id = p.id GROUP BY "http://localhost:4000"
             ) as commnet_count from testenn.posts p
             left join testenn.users u on p.writer_user_id = u.id
             left join testenn.nfts n on u.active_nft_id = n.id
@@ -71,7 +72,7 @@ module.exports = function(){
         `
         connection.query(
             sql,
-            (err , result)=>{
+            function(err , result){
                 if(err){
                     console.log(err)
                     res.send(err)
@@ -88,7 +89,7 @@ module.exports = function(){
     // 지갑주소를 가져와 ensname을 보여주기 위해 POST 방식으로 받음
     router.post('/boardDetail', function(req, res){
         const id = req.body.id
-        const wallet = req.body.walletAddress[0]
+        const wallet = req.body.wallet
         console.log("id : " + id)
         console.log("wallet : " + wallet)
 
@@ -111,6 +112,7 @@ module.exports = function(){
                         left join testenn.users u on c.writer_user_id = u.id
                         left join testenn.nfts n on u.active_nft_id = n.id
                         where c.post_id = ?
+                        order by created_at desc
                     `
                     connection.query(
                         sql,
@@ -155,6 +157,9 @@ module.exports = function(){
         const writer = req.body.user_id
         const title = req.body._title
         const content = req.body._content
+        console.log(writer)
+        console.log(title)
+        console.log(content)
 
         const sql =`
             insert
@@ -204,7 +209,7 @@ module.exports = function(){
     // 글 수정 폼
     router.get('/contentup?', function(req, res){
         const id = req.query.id
-        console.log(id)
+        console.log("#####################"+id)
 
         const sql = `
             select p.*, n.ensname from testenn.posts p
@@ -230,6 +235,8 @@ module.exports = function(){
     router.post('/boardup', function(req, res){
         const id = req.body._id
         const content = req.body._content
+        const fdf = [id,content]
+        console.log(fdf)
 
         const sql =`
             update 
@@ -249,6 +256,7 @@ module.exports = function(){
                 if(err){
                     console.log(err)
                 }else{
+                    console.log(result)
                     res.send("수정완료")
                 }
             }
@@ -261,10 +269,12 @@ module.exports = function(){
         const writer_id = req.body.writer_id
         const post_id = req.body.post_id
 
+        console.log({content, writer_id, post_id})
+
         const sql =`
             insert into testenn.comments
             (contents, writer_user_id, post_id, created_at)
-            values (?. ?, ?, now())
+            values (?, ?, ?, now())
         `
         const values = [content, writer_id, post_id]
         connection.query(
