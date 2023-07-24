@@ -152,6 +152,8 @@ module.exports = function(){
         )        
     })
 
+    
+
     // 글쓰기버튼을 누를때 writer는 users.id가 넘어와야됨
     router.post('/boardregister', function(req, res){
         const writer = req.body.user_id
